@@ -1,4 +1,4 @@
-package hello;
+package com.hello;
 
 import java.util.concurrent.Future;
 
@@ -17,7 +17,8 @@ public class GitHubLookupService {
         System.out.println("Looking up " + user);
         User results = restTemplate.getForObject("https://api.github.com/users/" + user, User.class);
         // Artificial delay of 1s for demonstration purposes
-        Thread.sleep(1000L);
+        Thread.sleep(10000);
+        System.out.println("Inside github lookup service: " + Thread.currentThread().getName());
         return new AsyncResult<User>(results);
     }
 

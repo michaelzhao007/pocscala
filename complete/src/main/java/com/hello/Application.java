@@ -1,18 +1,22 @@
-package hello;
+package com.hello;
 
 import java.util.concurrent.Future;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.scheduling.annotation.EnableAsync;
 
-@SpringBootApplication
-@EnableAsync
-public class Application implements CommandLineRunner {
+@Configuration
+@ComponentScan(basePackages="com")
+@EnableAutoConfiguration
+public class Application  {
 
-    @Autowired
+/*    @Autowired
     GitHubLookupService gitHubLookupService;
 
     @Override
@@ -24,6 +28,7 @@ public class Application implements CommandLineRunner {
         Future<User> page1 = gitHubLookupService.findUser("PivotalSoftware");
         Future<User> page2 = gitHubLookupService.findUser("CloudFoundry");
         Future<User> page3 = gitHubLookupService.findUser("Spring-Projects");
+        System.out.println("Main: " + Thread.currentThread().getName());
 
         // Wait until they are all done
         while (!(page1.isDone() && page2.isDone() && page3.isDone())) {
@@ -35,7 +40,7 @@ public class Application implements CommandLineRunner {
         System.out.println(page1.get());
         System.out.println(page2.get());
         System.out.println(page3.get());
-    }
+    }*/
 
     public static void main(String[] args) {
         SpringApplication.run(Application.class, args);
