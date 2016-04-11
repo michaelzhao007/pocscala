@@ -26,11 +26,18 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
 		</dependency>
-	  <dependency>
+		<dependency>
 			<groupId>com.typesafe.play</groupId>
 			<artifactId>play_2.11</artifactId>
 			<version>2.4.0</version>
 		</dependency>
+		<dependency>
+			<groupId>org.apache.httpcomponents</groupId>
+			<artifactId>httpasyncclient</artifactId>
+			<version>4.0-beta4</version>
+		</dependency>
+
+
 
 		<dependency>
 			<groupId>org.springframework</groupId>
@@ -45,7 +52,7 @@
 			<artifactId>scala-library</artifactId>
 			<version>2.11.8</version>
 		</dependency>
-	
+
 	</dependencies>
 
 

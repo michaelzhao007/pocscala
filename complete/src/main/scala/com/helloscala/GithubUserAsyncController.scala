@@ -1,5 +1,4 @@
 
-
 package com.helloscala
 
 import play.api._
@@ -25,23 +24,33 @@ import org.springframework.http.ResponseEntity
 import com.hello.User
 import com.hello.GitHubLookupService
 import org.springframework.web.context.request.async.DeferredResult
+import org.springframework.http.ResponseEntity
+import org.springframework.http.client.HttpComponentsAsyncClientHttpRequestFactory
+import org.springframework.stereotype.Service
+import org.springframework.util.concurrent.ListenableFuture
+import org.springframework.web.client.AsyncRestTemplate
+import org.springframework.util.concurrent.ListenableFutureCallback;
+import com.hello.GithubLookupAsyncService
 
-
-/*
- * @author hnq583
- */
 @Controller
-class GithubUserController @Autowired() (gitHubLookupService: GitHubLookupServiceSync) {
-    
-    @CrossOrigin(origins = Array("http://localhost:9000"))
-    @RequestMapping(value = Array("/user"), method = Array(RequestMethod.GET))
+class GithubUserAsyncController @Autowired() (githubLookupService: GithubLookupAsyncService) {
+  
+  implicit def toScalaFuture[T] (f: ListenableFuture[T]): Future[T] = {
+    val p = promise[T]()
+   f.addCallback(new ListenableFutureCallback[T] {
+       def onSuccess(result: T) {p.success(result)}
+       def onFailure(t: Throwable) {p.failure(t)}
+   })
+   p.future
+  }
+  
+   @CrossOrigin(origins = Array("http://localhost:9000"))
+    @RequestMapping(value = Array("/user2"), method = Array(RequestMethod.GET))
     @ResponseBody
     def getUserScala() =   {
        val result = new DeferredResult[User]
        println("in getuserscala: "+ Thread.currentThread().getName)
-       val users = Future { 
-         gitHubLookupService.findUser("PivotalSoftware")
-       }
+       val users =  toScalaFuture(githubLookupService.findUser("PivotalSoftware")).map { _.getBody }
        users onSuccess {
          case user => result.setResult(user)
        }
@@ -50,6 +59,7 @@ class GithubUserController @Autowired() (gitHubLookupService: GitHubLookupServic
        }
        result
      }
-    
+  
+ 
   
 }

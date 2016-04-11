@@ -1,5 +1,8 @@
 package com.hello;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,11 +18,12 @@ public class GitController {
   
   @RequestMapping("/user1")
   @ResponseBody
-  public Future<User> getUser() throws InterruptedException {
+  public User getUser() throws InterruptedException, ExecutionException {
       System.out.println("Inside controller: " + Thread.currentThread().getName());
       Future<User> res = service.findUser("PivotalSoftware");
       System.out.println("after res");
-      return res;
+      User user = res.get();
+      return user;
       
   }
 }
